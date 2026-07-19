@@ -1,7 +1,7 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import { Text } from "../../components/ui/Text";
-import { useThemeStore, useCallStore } from "../../store";
+import { useThemeStore } from "../../store";
 
 function TabIconText({ label, focused }: { label: string; focused: boolean }) {
   return (
@@ -14,7 +14,6 @@ function TabIconText({ label, focused }: { label: string; focused: boolean }) {
 export default function TabLayout() {
   const mode = useThemeStore((s) => s.mode);
   const isDark = mode === "dark";
-  const isActiveCall = useCallStore((s) => s.isActive);
 
   return (
     <Tabs
@@ -59,7 +58,6 @@ export default function TabLayout() {
         options={{
           title: "Alerts",
           tabBarIcon: ({ focused }) => <TabIconText label="🔔" focused={focused} />,
-          tabBarBadge: isActiveCall ? 3 : undefined,
         }}
       />
       <Tabs.Screen

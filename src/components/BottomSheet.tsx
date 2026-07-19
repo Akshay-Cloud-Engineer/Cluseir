@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, ReactNode } from "react";
+import React, { useEffect, useRef, useState, ReactNode } from "react";
 import { View, Animated, Dimensions, TouchableWithoutFeedback } from "react-native";
 import { Text } from "./ui/Text";
 
@@ -19,11 +19,15 @@ export const BottomSheet = ({
   children,
   height = SCREEN_HEIGHT * 0.5,
 }: BottomSheetProps) => {
+  const [rendered, setRendered] = useState(visible);
+  const visibleRef = useRef(visible);
+  visibleRef.current = visible;
   const translateY = useRef(new Animated.Value(height)).current;
   const backdropOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (visible) {
+      setRendered(true);
       Animated.parallel([
         Animated.spring(translateY, {
           toValue: 0,
@@ -48,11 +52,13 @@ export const BottomSheet = ({
           duration: 250,
           useNativeDriver: true,
         }),
-      ]).start();
+      ]).start(() => {
+        if (!visibleRef.current) setRendered(false);
+      });
     }
   }, [visible, height, translateY, backdropOpacity]);
 
-  if (!visible) return null;
+  if (!rendered) return null;
 
   return (
     <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 1000 }}>

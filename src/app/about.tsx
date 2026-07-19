@@ -31,10 +31,10 @@ export default function AboutScreen() {
         <Card style={{ marginTop: 16, width: "100%" }}>
           <View style={{ paddingVertical: 8 }}>
             {[
-              { label: "Terms of Service", value: "" },
-              { label: "Privacy Policy", value: "" },
-              { label: "Community Guidelines", value: "" },
-              { label: "Licenses", value: "" },
+              { label: "Terms of Service", value: "terms" },
+              { label: "Privacy Policy", value: "privacy" },
+              { label: "Community Guidelines", value: "guidelines" },
+              { label: "Licenses", value: "licenses" },
             ].map((item, index) => (
               <React.Fragment key={item.label}>
                 <TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 12 }} onPress={() => router.push(`/help`)}>

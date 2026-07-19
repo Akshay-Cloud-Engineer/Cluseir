@@ -12,9 +12,13 @@ export const mockUser: User = {
   preferences: {
     minAge: 18,
     maxAge: 35,
+    maxPrice: 500,
     location: "Any",
     language: "English",
     sortBy: "rating",
+    onlineOnly: false,
+    verifiedOnly: false,
+    services: [],
   },
 };
 
@@ -104,6 +108,4 @@ export const mockCallRequests: CallRequest[] = [
   },
 ];
 
-export const updateUserCredits = (amount: number): void => {
-  mockUser.credits += amount;
-};
+

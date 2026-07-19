@@ -2,17 +2,10 @@ import React, { useState } from "react";
 import { View, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, Card, Avatar, Badge } from "../../components";
-import { Notification } from "../../types";
-
-const initialNotifications: Notification[] = [
-  { id: "n1", type: "call_request", title: "Call Request", message: "Sophia wants to talk to you", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400", read: false, createdAt: "2 min ago" },
-  { id: "n2", type: "call_end", title: "Call Ended", message: "Your call with Emma ended", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400", read: false, createdAt: "1 hour ago" },
-  { id: "n3", type: "message", title: "New Message", message: "Olivia sent you a message", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400", read: true, createdAt: "3 hours ago" },
-  { id: "n4", type: "system", title: "Welcome!", message: "Welcome to Cluseir! Start exploring.", read: false, createdAt: "1 day ago" },
-];
+import { mockNotifications } from "../../data";
 
 export default function NotificationsScreen() {
-  const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
+  const [notifications, setNotifications] = useState(mockNotifications);
   const unread = notifications.filter((n) => !n.read).length;
 
   const markAsRead = (id: string) => {

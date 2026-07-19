@@ -35,9 +35,13 @@ export interface User {
 export interface UserPreferences {
   minAge: number;
   maxAge: number;
+  maxPrice: number;
   location: string;
   language: string;
   sortBy: "rating" | "price" | "distance";
+  onlineOnly: boolean;
+  verifiedOnly: boolean;
+  services: string[];
 }
 
 export interface Notification {

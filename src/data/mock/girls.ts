@@ -197,10 +197,4 @@ export const mockGirls: Girl[] = [
   },
 ];
 
-export const getGirlById = (id: string): Girl | undefined => {
-  return mockGirls.find((girl) => girl.id === id);
-};
 
-export const getOnlineGirls = (): Girl[] => {
-  return mockGirls.filter((girl) => girl.isOnline);
-};

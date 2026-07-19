@@ -32,11 +32,15 @@ export default function FiltersScreen() {
           ...user.preferences,
           minAge,
           maxAge,
+          maxPrice,
+          onlineOnly,
+          verifiedOnly,
+          services: selectedServices,
         },
       });
     }
     router.back();
-  }, [minAge, maxAge, router]);
+  }, [minAge, maxAge, maxPrice, onlineOnly, verifiedOnly, selectedServices, router]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
