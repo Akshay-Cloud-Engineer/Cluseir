@@ -75,7 +75,6 @@ export default function CallHistoryScreen() {
           <FlashList
             data={filtered}
             renderItem={renderItem}
-            estimatedItemSize={80}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 20 }}
           />

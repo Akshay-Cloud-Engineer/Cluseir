@@ -94,7 +94,6 @@ export default function SearchScreen() {
           <FlashList
             data={results}
             renderItem={renderItem}
-            estimatedItemSize={100}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 20 }}
           />
