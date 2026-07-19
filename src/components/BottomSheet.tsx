@@ -5,6 +5,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
   withSpring,
+  runOnJS,
 } from "react-native-reanimated";
 import { Text } from "./ui/Text";
 
@@ -44,6 +45,8 @@ export const BottomSheet = ({
   const animatedBackdropStyle = useAnimatedStyle(() => {
     return {
       opacity: backdropOpacity.value,
+      // hide completely when not visible and animation finished
+      display: backdropOpacity.value === 0 && !visible ? "none" : "flex",
     };
   });
 

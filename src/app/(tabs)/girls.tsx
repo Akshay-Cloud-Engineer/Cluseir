@@ -61,6 +61,7 @@ export default function GirlsScreen() {
         <FlashList
           data={mockGirls}
           renderItem={renderItem}
+          estimatedItemSize={140}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 20 }}
         />

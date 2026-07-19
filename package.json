@@ -8,11 +8,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "eslint . --ext .ts,.tsx",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "typecheck": "tsc --noEmit",
-    "test": "echo \"No tests configured yet\" && exit 0",
-    "build:check": "npm run typecheck",
-    "audit:prod": "npm audit --omit=dev --audit-level=high"
+    "format": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@shopify/flash-list": "2.0.2",

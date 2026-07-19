@@ -3,7 +3,7 @@ import { View, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Text, Card, Button, Divider } from "../components";
-import { useToastStore, useThemeStore } from "../store";
+import { useToastStore } from "../store";
 
 const reportReasons = [
   "Inappropriate behavior",
@@ -18,7 +18,6 @@ export default function ReportUserScreen() {
   const router = useRouter();
   const [selectedReason, setSelectedReason] = useState<string>("");
   const showToast = useToastStore((s) => s.showToast);
-  const isDark = useThemeStore((s) => s.mode) === "dark";
 
   const handleSubmit = () => {
     if (!selectedReason) return;
@@ -27,7 +26,7 @@ export default function ReportUserScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: isDark ? "#000" : "#F5F5F5" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
       <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
           <TouchableOpacity onPress={() => router.back()}>

@@ -7,7 +7,6 @@ interface BadgeProps {
   variant?: "default" | "primary" | "success" | "warning" | "error";
   size?: "sm" | "md";
   style?: ViewStyle;
-  className?: string;
 }
 
 const bgColors = {
@@ -26,10 +25,9 @@ const textColors = {
   error: "#ef4444",
 };
 
-export const Badge = ({ children, variant = "default", size = "sm", style, className }: BadgeProps) => {
+export const Badge = ({ children, variant = "default", size = "sm", style }: BadgeProps) => {
   return (
     <View
-      className={className}
       style={[{
         backgroundColor: bgColors[variant],
         borderRadius: 100,

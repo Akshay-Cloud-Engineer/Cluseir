@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -58,7 +58,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -67,7 +67,7 @@ jobs:
           cache: npm
 
       - name: Setup Java
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
@@ -82,7 +82,7 @@ jobs:
       - name: Expo prebuild
         run: npx expo prebuild --platform android --clean
         env:
-          EXPO_PUBLIC_API_BASE_URL: ${{ secrets.EXPO_PUBLIC_API_BASE_URL }}
+          EXPO_PUBLIC_API_BASE_URL: ${{ secrets.EXPO_PUBLIC_API_BASE_URL || 'https://LocalFind-OpenMusic-API.hf.space' }}
           EXPO_PUBLIC_SENTRY_DSN: ${{ secrets.EXPO_PUBLIC_SENTRY_DSN }}
 
       - name: Make Gradlew executable
@@ -93,16 +93,16 @@ jobs:
           ./gradlew clean assembleRelease bundleRelease --no-daemon
         working-directory: android
         env:
-          EXPO_PUBLIC_API_BASE_URL: ${{ secrets.EXPO_PUBLIC_API_BASE_URL }}
+          EXPO_PUBLIC_API_BASE_URL: ${{ secrets.EXPO_PUBLIC_API_BASE_URL || 'https://LocalFind-OpenMusic-API.hf.space' }}
           EXPO_PUBLIC_SENTRY_DSN: ${{ secrets.EXPO_PUBLIC_SENTRY_DSN }}
 
       # Collect every APK Gradle produced and rename them clearly.
       # This gives us:
-      #   Cluseir-v0.1.4-universal.apk   ← works on every Android phone
-      #   Cluseir-v0.1.4-arm64-v8a.apk   ← modern 64-bit phones (smallest file)
-      #   Cluseir-v0.1.4-armeabi-v7a.apk ← older 32-bit phones
-      #   Cluseir-v0.1.4-x86_64.apk      ← emulators / x86 devices
-      #   Cluseir-v0.1.4.aab             ← Play Store bundle
+      #   OpenMusic-v0.1.4-universal.apk   ← works on every Android phone
+      #   OpenMusic-v0.1.4-arm64-v8a.apk   ← modern 64-bit phones (smallest file)
+      #   OpenMusic-v0.1.4-armeabi-v7a.apk ← older 32-bit phones
+      #   OpenMusic-v0.1.4-x86_64.apk      ← emulators / x86 devices
+      #   OpenMusic-v0.1.4.aab             ← Play Store bundle
       - name: Download bundletool
         run: |
           mkdir -p tools
@@ -130,22 +130,22 @@ jobs:
 
           # Copy Gradle-produced APKs if present
           if [ -f "$APK_DIR/app-universal-release.apk" ]; then
-            cp "$APK_DIR/app-universal-release.apk" "release/Cluseir-v${VERSION}-universal.apk"
+            cp "$APK_DIR/app-universal-release.apk" "release/OpenMusic-v${VERSION}-universal.apk"
           elif [ -f "$APK_DIR/app-release.apk" ]; then
-            cp "$APK_DIR/app-release.apk" "release/Cluseir-v${VERSION}-universal.apk"
+            cp "$APK_DIR/app-release.apk" "release/OpenMusic-v${VERSION}-universal.apk"
           fi
 
           for ABI in arm64-v8a armeabi-v7a x86_64 x86; do
             FILE="$APK_DIR/app-${ABI}-release.apk"
             if [ -f "$FILE" ]; then
-              cp "$FILE" "release/Cluseir-v${VERSION}-${ABI}.apk"
+              cp "$FILE" "release/OpenMusic-v${VERSION}-${ABI}.apk"
             fi
           done
 
           # Copy AAB if exists
           AAB_PATH="android/app/build/outputs/bundle/release/app-release.aab"
           if [ -f "$AAB_PATH" ]; then
-            cp "$AAB_PATH" "release/Cluseir-v${VERSION}.aab"
+            cp "$AAB_PATH" "release/OpenMusic-v${VERSION}.aab"
           fi
 
           # If bundletool produced an .apks file, extract APKs from it
@@ -155,7 +155,7 @@ jobs:
             # Copy any APKs found in the .apks package
             find tmp_apks -name "*.apk" -type f -print0 | while IFS= read -r -d '' APK; do
               BASENAME=$(basename "$APK")
-              cp "$APK" "release/Cluseir-v${VERSION}-${BASENAME}"
+              cp "$APK" "release/OpenMusic-v${VERSION}-${BASENAME}"
             done
           fi
 
@@ -164,7 +164,7 @@ jobs:
 
       # Upload everything in the release/ folder as one artifact bundle
       - name: Upload release artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: release-artifacts
           path: release/
@@ -183,7 +183,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
 
       - name: Read version from package.json
         id: version
@@ -201,7 +201,7 @@ jobs:
           fi
 
       - name: Download release artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           name: release-artifacts
           path: release
@@ -222,10 +222,10 @@ jobs:
           } >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.tag.outputs.TAG }}
-          name: Cluseir ${{ steps.tag.outputs.TAG }}
+          name: OpenMusic ${{ steps.tag.outputs.TAG }}
           body: ${{ steps.changelog.outputs.NOTES }}
           draft: false
           prerelease: false

@@ -80,6 +80,7 @@ export default function NotificationsScreen() {
           <FlashList
             data={notifications}
             renderItem={renderItem}
+            estimatedItemSize={80}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 20 }}
           />

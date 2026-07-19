@@ -81,6 +81,7 @@ export default function IncomingRequestScreen() {
           <FlashList
             data={incoming}
             renderItem={renderItem}
+            estimatedItemSize={120}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 20 }}
           />
