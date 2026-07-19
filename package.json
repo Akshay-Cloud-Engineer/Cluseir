@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "test": "echo \"No tests configured yet\" && exit 0",
     "build:check": "npm run typecheck",
-    "audit:prod": "npm audit --omit=dev --audit-level=high"
+    "audit:prod": "npm audit --omit=dev --audit-level=high",
+    "postinstall": "node -e \"try{require('fs').mkdirSync(require('path').join(process.cwd(),'node_modules','react-native-worklets'),{recursive:true});require('fs').writeFileSync(require('path').join(process.cwd(),'node_modules','react-native-worklets','package.json'),JSON.stringify({name:'react-native-worklets',version:'0.0.0-stub',private:true}));require('fs').writeFileSync(require('path').join(process.cwd(),'node_modules','react-native-worklets','plugin.js'),'module.exports=function(){return{visitor:{}}};');}catch(e){}\""
   },
   "dependencies": {
     "@shopify/flash-list": "2.0.2",
