@@ -23,74 +23,62 @@ export default function SettingsScreen() {
   ];
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
-      <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
+    <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
+      <View className="px-5 pt-4 pb-2">
         <Text variant="h2">Settings</Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, paddingHorizontal: 20 }}>
-        <Card style={{ marginBottom: 16, flexDirection: "row", alignItems: "center" }}>
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1 px-5">
+        <Card className="mb-4 flex-row items-center">
           <Avatar uri={mockUser.avatar} size={64} />
-          <View style={{ marginLeft: 16, flex: 1 }}>
+          <View className="ml-4 flex-1">
             <Text variant="h5">{mockUser.name}</Text>
-            <Text variant="caption" color="#A3A3A3">{mockUser.email}</Text>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 4, marginTop: 4 }}>
-              <Text variant="captionBold" color="#ec4899">${mockUser.credits}</Text>
-              <Text variant="small" color="#A3A3A3">credits</Text>
+            <Text variant="caption" className="text-muted-light dark:text-muted-dark">{mockUser.email}</Text>
+            <View className="flex-row items-center gap-1 mt-1">
+              <Text variant="captionBold" className="text-primary-500">${mockUser.credits}</Text>
+              <Text variant="small" className="text-muted-light dark:text-muted-dark">credits</Text>
             </View>
           </View>
         </Card>
 
-        <Card style={{ marginBottom: 16 }}>
+        <Card className="mb-4 p-0">
           <TouchableOpacity onPress={toggleTheme} activeOpacity={0.7}>
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingVertical: 8 }}>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-                <Text style={{ fontSize: 22 }}>{mode === "dark" ? "🌙" : "☀️"}</Text>
+            <View className="flex-row items-center justify-between py-3 px-4">
+              <View className="flex-row items-center gap-3">
+                <Text className="text-[22px]">{mode === "dark" ? "🌙" : "☀️"}</Text>
                 <View>
                   <Text variant="captionBold">Dark Mode</Text>
-                  <Text variant="tiny" color="#A3A3A3">{mode === "dark" ? "Enabled" : "Disabled"}</Text>
+                  <Text variant="tiny" className="text-muted-light dark:text-muted-dark">{mode === "dark" ? "Enabled" : "Disabled"}</Text>
                 </View>
               </View>
               <View
-                style={{
-                  width: 44,
-                  height: 24,
-                  borderRadius: 12,
-                  backgroundColor: mode === "dark" ? "#ec4899" : "#333",
-                  padding: 2,
-                }}
+                className={`w-11 h-6 rounded-full p-0.5 justify-center ${
+                  mode === "dark" ? "bg-primary-500 items-end" : "bg-neutral-300 dark:bg-neutral-800 items-start"
+                }`}
               >
-                <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 10,
-                    backgroundColor: "#fff",
-                    alignSelf: mode === "dark" ? "flex-end" : "flex-start",
-                  }}
-                />
+                <View className="w-5 h-5 rounded-full bg-white" />
               </View>
             </View>
           </TouchableOpacity>
         </Card>
 
-        <Card style={{ marginBottom: 16 }}>
+        <Card className="mb-4">
           {menuItems.map((item, index) => (
             <React.Fragment key={item.label}>
               <TouchableOpacity
                 onPress={() => router.push(item.route)}
                 activeOpacity={0.7}
-                style={{ flexDirection: "row", alignItems: "center", paddingVertical: 14 }}
+                className="flex-row items-center py-3.5"
               >
-                <Text style={{ fontSize: 20, marginRight: 12 }}>{item.icon}</Text>
-                <Text variant="captionBold" style={{ flex: 1 }}>{item.label}</Text>
-                <Text color="#555">›</Text>
+                <Text className="text-[20px] mr-3">{item.icon}</Text>
+                <Text variant="captionBold" className="flex-1">{item.label}</Text>
+                <Text className="text-neutral-500">›</Text>
               </TouchableOpacity>
               {index < menuItems.length - 1 && <Divider marginVertical={0} />}
             </React.Fragment>
           ))}
         </Card>
 
-        <Button variant="outline" style={{ marginTop: 8, marginBottom: 32 }} onPress={() => {
+        <Button variant="outline" className="mt-2 mb-8" onPress={() => {
           useAuthStore.getState().logout();
           router.replace("/(auth)/onboarding");
         }}>

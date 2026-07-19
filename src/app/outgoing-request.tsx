@@ -1,9 +1,11 @@
 import React from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { Text, Card, Avatar, Badge } from "../components";
+import { FlashList } from "@shopify/flash-list";
+import { Text, Card, Avatar, Badge, EmptyState } from "../components";
 import { useCallStore } from "../store";
+import { CallRequest } from "../types";
 
 export default function OutgoingRequestScreen() {
   const router = useRouter();
@@ -19,41 +21,48 @@ export default function OutgoingRequestScreen() {
     }
   };
 
+  const renderItem = ({ item: req }: { item: CallRequest }) => (
+    <View className="px-5 mb-3">
+      <Card>
+        <View className="flex-row items-center">
+          <Avatar uri={req.girlAvatar} name={req.girlName} size={48} />
+          <View className="flex-1 ml-3">
+            <Text variant="captionBold">{req.girlName || "Unknown"}</Text>
+            <Text variant="small" className="text-muted-light dark:text-muted-dark">{req.timestamp}</Text>
+          </View>
+          {getStatusBadge(req.status)}
+        </View>
+      </Card>
+    </View>
+  );
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
-      <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-          <TouchableOpacity onPress={() => router.back()}>
-            <Text style={{ fontSize: 24, color: "#fff" }}>‹</Text>
+    <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
+      <View className="px-5 pt-4 pb-2">
+        <View className="flex-row items-center gap-3">
+          <TouchableOpacity onPress={() => router.back()} className="p-1">
+            <Text className="text-[24px] text-text-light dark:text-text-dark">‹</Text>
           </TouchableOpacity>
           <Text variant="h2">Outgoing Requests</Text>
         </View>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, paddingHorizontal: 20 }}>
+      <View className="flex-1 mt-2">
         {outgoing.length === 0 ? (
-          <View style={{ flex: 1, alignItems: "center", paddingTop: 60 }}>
-            <Text style={{ fontSize: 60, marginBottom: 16 }}>📤</Text>
-            <Text variant="h4">No outgoing requests</Text>
-            <Text variant="body" color="#A3A3A3" style={{ marginTop: 8 }}>
-              Requests you send will appear here
-            </Text>
-          </View>
+          <EmptyState
+            icon="📤"
+            title="No outgoing requests"
+            message="Requests you send will appear here"
+          />
         ) : (
-          outgoing.map((req) => (
-            <Card key={req.id} style={{ marginBottom: 12 }}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Avatar uri={req.girlAvatar} name={req.girlName} size={48} />
-                <View style={{ flex: 1, marginLeft: 12 }}>
-                  <Text variant="captionBold">{req.girlName || "Unknown"}</Text>
-                  <Text variant="small" color="#A3A3A3">{req.timestamp}</Text>
-                </View>
-                {getStatusBadge(req.status)}
-              </View>
-            </Card>
-          ))
+          <FlashList
+            data={outgoing}
+            renderItem={renderItem}
+            estimatedItemSize={80}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
         )}
-        <View style={{ height: 20 }} />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

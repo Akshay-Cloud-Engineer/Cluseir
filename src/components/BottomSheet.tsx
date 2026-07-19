@@ -1,5 +1,12 @@
-import React, { useEffect, useRef, ReactNode } from "react";
-import { View, Animated, Dimensions, TouchableWithoutFeedback } from "react-native";
+import React, { useEffect, ReactNode } from "react";
+import { View, Dimensions, TouchableWithoutFeedback } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSpring,
+  runOnJS,
+} from "react-native-reanimated";
 import { Text } from "./ui/Text";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -19,78 +26,52 @@ export const BottomSheet = ({
   children,
   height = SCREEN_HEIGHT * 0.5,
 }: BottomSheetProps) => {
-  const translateY = useRef(new Animated.Value(height)).current;
-  const backdropOpacity = useRef(new Animated.Value(0)).current;
+  const translateY = useSharedValue(SCREEN_HEIGHT);
+  const backdropOpacity = useSharedValue(0);
 
   useEffect(() => {
     if (visible) {
-      Animated.parallel([
-        Animated.spring(translateY, {
-          toValue: 0,
-          damping: 20,
-          useNativeDriver: true,
-        }),
-        Animated.timing(backdropOpacity, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
+      translateY.value = withSpring(0, {
+        damping: 20,
+        stiffness: 90,
+      });
+      backdropOpacity.value = withTiming(1, { duration: 300 });
     } else {
-      Animated.parallel([
-        Animated.timing(translateY, {
-          toValue: height,
-          duration: 250,
-          useNativeDriver: true,
-        }),
-        Animated.timing(backdropOpacity, {
-          toValue: 0,
-          duration: 250,
-          useNativeDriver: true,
-        }),
-      ]).start();
+      translateY.value = withTiming(SCREEN_HEIGHT, { duration: 250 });
+      backdropOpacity.value = withTiming(0, { duration: 250 });
     }
-  }, [visible, height, translateY, backdropOpacity]);
+  }, [visible, translateY, backdropOpacity]);
 
-  if (!visible) return null;
+  const animatedBackdropStyle = useAnimatedStyle(() => {
+    return {
+      opacity: backdropOpacity.value,
+      // hide completely when not visible and animation finished
+      display: backdropOpacity.value === 0 && !visible ? "none" : "flex",
+    };
+  });
 
+  const animatedSheetStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    };
+  });
+
+  // Always render to allow exit animations, but pointer events handled by display: none on backdrop
   return (
-    <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 1000 }}>
+    <View className="absolute top-0 left-0 right-0 bottom-0 z-[1000]" pointerEvents={visible ? "auto" : "none"}>
       <TouchableWithoutFeedback onPress={onClose}>
         <Animated.View
-          style={{
-            flex: 1,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            opacity: backdropOpacity,
-          }}
+          style={[animatedBackdropStyle]}
+          className="flex-1 bg-black/50"
         />
       </TouchableWithoutFeedback>
       <Animated.View
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height,
-          backgroundColor: "#1E1E1E",
-          borderTopLeftRadius: 24,
-          borderTopRightRadius: 24,
-          padding: 20,
-          transform: [{ translateY }],
-        }}
+        style={[{ height }, animatedSheetStyle]}
+        className="absolute bottom-0 left-0 right-0 bg-surface-light dark:bg-[#1E1E1E] rounded-t-3xl p-5"
       >
-        <View
-          style={{
-            width: 40,
-            height: 4,
-            borderRadius: 2,
-            backgroundColor: "#555",
-            alignSelf: "center",
-            marginBottom: 16,
-          }}
-        />
+        <View className="w-10 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600 self-center mb-4" />
         {title && (
-          <Text variant="h4" style={{ marginBottom: 16 }}>
+          <Text variant="h4" className="mb-4">
             {title}
           </Text>
         )}
@@ -99,3 +80,4 @@ export const BottomSheet = ({
     </View>
   );
 };
+

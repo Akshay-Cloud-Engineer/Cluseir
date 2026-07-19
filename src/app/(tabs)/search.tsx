@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { View, ScrollView, TouchableOpacity, TextInput } from "react-native";
+import { View, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { Text, Card, Avatar, Button } from "../../components";
+import { FlashList } from "@shopify/flash-list";
+import { Text, Card, Avatar, Button, EmptyState } from "../../components";
 import { mockGirls } from "../../data";
+import { Girl } from "../../types";
 
 export default function SearchScreen() {
   const router = useRouter();
@@ -17,102 +19,87 @@ export default function SearchScreen() {
       )
     : [];
 
+  const renderItem = ({ item: girl }: { item: Girl }) => (
+    <TouchableOpacity
+      onPress={() => router.push(`/girl/${girl.id}`)}
+      activeOpacity={0.7}
+      className="px-5 mb-3"
+    >
+      <Card>
+        <View className="flex-row items-center">
+          <Avatar uri={girl.avatar} size={60} isOnline={girl.isOnline} />
+          <View className="flex-1 ml-3">
+            <View className="flex-row items-center gap-2">
+              <Text variant="h5">{girl.name}</Text>
+              <Text variant="caption" className="text-muted-light dark:text-muted-dark">{girl.age}</Text>
+            </View>
+            <Text variant="small" className="text-muted-light dark:text-muted-dark">{girl.location}</Text>
+            <View className="flex-row items-center gap-1 mt-1">
+              <Text variant="small" className="text-warning">★</Text>
+              <Text variant="small" className="text-warning">{girl.rating}</Text>
+              <Text variant="tiny" className="text-muted-light dark:text-muted-dark">({girl.reviews})</Text>
+            </View>
+          </View>
+          <Text variant="captionBold" className="text-primary-500">${girl.price}/min</Text>
+        </View>
+      </Card>
+    </TouchableOpacity>
+  );
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
-      <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
+    <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
+      <View className="px-5 pt-4 pb-2">
         <Text variant="h2">Search</Text>
-        <Text variant="caption" color="#A3A3A3">Find someone special</Text>
+        <Text variant="caption" className="text-muted-light dark:text-muted-dark">Find someone special</Text>
       </View>
-      <View style={{ paddingHorizontal: 20, marginBottom: 12 }}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#1E1E1E",
-            borderRadius: 12,
-            paddingHorizontal: 16,
-            gap: 8,
-          }}
-        >
-          <Text style={{ fontSize: 18 }}>🔍</Text>
+      <View className="px-5 mb-3">
+        <View className="flex-row items-center bg-surface-light dark:bg-surface-dark rounded-xl px-4 gap-2 border border-border-light dark:border-border-dark">
+          <Text className="text-[18px]">🔍</Text>
           <TextInput
             placeholder="Search by name, location, or service..."
-            placeholderTextColor="#555"
+            placeholderTextColor="#737373"
             value={query}
             onChangeText={setQuery}
-            style={{
-              flex: 1,
-              paddingVertical: 14,
-              fontSize: 16,
-              color: "#FFFFFF",
-            }}
+            className="flex-1 py-3 text-base text-text-light dark:text-text-dark"
           />
           {query.length > 0 && (
             <TouchableOpacity onPress={() => setQuery("")}>
-              <Text style={{ color: "#A3A3A3", fontSize: 18 }}>✕</Text>
+              <Text className="text-muted-light dark:text-muted-dark text-[18px]">✕</Text>
             </TouchableOpacity>
           )}
         </View>
         <Button
           variant="outline"
           size="sm"
-          style={{ marginTop: 8 }}
+          className="mt-2"
           onPress={() => router.push("/filters")}
         >
           Filters
         </Button>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, paddingHorizontal: 20 }}>
+      <View className="flex-1">
         {query === "" ? (
-          <View style={{ flex: 1, alignItems: "center", paddingTop: 60 }}>
-            <Text style={{ fontSize: 60, marginBottom: 16 }}>🔍</Text>
-            <Text variant="h4" style={{ textAlign: "center" }}>
-              Search for girls
-            </Text>
-            <Text variant="body" color="#A3A3A3" style={{ textAlign: "center", marginTop: 8 }}>
-              Find by name, location, or services
-            </Text>
-          </View>
+          <EmptyState 
+            icon="🔍" 
+            title="Search for girls" 
+            message="Find by name, location, or services" 
+          />
         ) : results.length === 0 ? (
-          <View style={{ flex: 1, alignItems: "center", paddingTop: 60 }}>
-            <Text style={{ fontSize: 60, marginBottom: 16 }}>😕</Text>
-            <Text variant="h4" style={{ textAlign: "center" }}>
-              No results found
-            </Text>
-            <Text variant="body" color="#A3A3A3" style={{ textAlign: "center", marginTop: 8 }}>
-              Try a different search term
-            </Text>
-          </View>
+          <EmptyState 
+            icon="😕" 
+            title="No results found" 
+            message="Try a different search term" 
+          />
         ) : (
-          results.map((girl) => (
-            <TouchableOpacity
-              key={girl.id}
-              onPress={() => router.push(`/girl/${girl.id}`)}
-              activeOpacity={0.7}
-            >
-              <Card style={{ marginBottom: 12 }}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Avatar uri={girl.avatar} size={60} isOnline={girl.isOnline} />
-                  <View style={{ flex: 1, marginLeft: 12 }}>
-                    <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-                      <Text variant="h5">{girl.name}</Text>
-                      <Text variant="caption" color="#A3A3A3">{girl.age}</Text>
-                    </View>
-                    <Text variant="small" color="#A3A3A3">{girl.location}</Text>
-                    <View style={{ flexDirection: "row", alignItems: "center", gap: 4, marginTop: 4 }}>
-                      <Text variant="small" color="#f59e0b">★</Text>
-                      <Text variant="small" color="#f59e0b">{girl.rating}</Text>
-                      <Text variant="tiny" color="#A3A3A3">({girl.reviews})</Text>
-                    </View>
-                  </View>
-                  <Text variant="captionBold" color="#ec4899">${girl.price}/min</Text>
-                </View>
-              </Card>
-            </TouchableOpacity>
-          ))
+          <FlashList
+            data={results}
+            renderItem={renderItem}
+            estimatedItemSize={100}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
         )}
-        <View style={{ height: 20 }} />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
