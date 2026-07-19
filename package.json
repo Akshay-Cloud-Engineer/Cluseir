@@ -11,7 +11,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "test": "echo \"No tests configured yet\" && exit 0",
-    "build:check": "typecheck",
+    "build:check": "npm run typecheck",
     "audit:prod": "npm audit --production"
   },
   "dependencies": {
