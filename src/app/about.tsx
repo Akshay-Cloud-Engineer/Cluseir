@@ -3,12 +3,14 @@ import { View, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Text, Card, Divider } from "../components";
+import { useThemeStore } from "../store";
 
 export default function AboutScreen() {
   const router = useRouter();
+  const isDark = useThemeStore((s) => s.mode) === "dark";
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: isDark ? "#000" : "#F5F5F5" }}>
       <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
           <TouchableOpacity onPress={() => router.back()}>
@@ -31,15 +33,15 @@ export default function AboutScreen() {
         <Card style={{ marginTop: 16, width: "100%" }}>
           <View style={{ paddingVertical: 8 }}>
             {[
-              { label: "Terms of Service", value: "" },
-              { label: "Privacy Policy", value: "" },
-              { label: "Community Guidelines", value: "" },
-              { label: "Licenses", value: "" },
+              { label: "Terms of Service" },
+              { label: "Privacy Policy" },
+              { label: "Community Guidelines" },
+              { label: "Licenses" },
             ].map((item, index) => (
               <React.Fragment key={item.label}>
                 <TouchableOpacity style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 12 }} onPress={() => router.push(`/help`)}>
                   <Text variant="captionBold">{item.label}</Text>
-                  <Text color="#555">›</Text>
+                  <Text color={isDark ? "#555" : "#999"}>›</Text>
                 </TouchableOpacity>
                 {index < 3 && <Divider marginVertical={0} />}
               </React.Fragment>
@@ -47,7 +49,7 @@ export default function AboutScreen() {
           </View>
         </Card>
 
-        <Text variant="small" color="#555" style={{ marginTop: 32 }}>
+        <Text variant="small" color={isDark ? "#555" : "#999"} style={{ marginTop: 32 }}>
           © 2026 Cluseir. All rights reserved.
         </Text>
       </View>

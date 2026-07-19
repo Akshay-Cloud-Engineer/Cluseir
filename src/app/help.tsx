@@ -3,6 +3,7 @@ import { View, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Text, Card, Divider } from "../components";
+import { useThemeStore } from "../store";
 
 const faqs = [
   { q: "How do I make a call?", a: "Browse girls, tap on their profile, and press the Call button to start a conversation." },
@@ -14,9 +15,10 @@ const faqs = [
 
 export default function HelpScreen() {
   const router = useRouter();
+  const isDark = useThemeStore((s) => s.mode) === "dark";
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: isDark ? "#000" : "#F5F5F5" }}>
       <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
           <TouchableOpacity onPress={() => router.back()}>

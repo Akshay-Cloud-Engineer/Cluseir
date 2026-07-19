@@ -5,13 +5,15 @@ import { useThemeStore } from "../../store";
 interface CardProps {
   children: ReactNode;
   style?: ViewStyle;
+  className?: string;
   padded?: boolean;
 }
 
-export const Card = ({ children, style, padded = true }: CardProps) => {
+export const Card = ({ children, style, className, padded = true }: CardProps) => {
   const isDark = useThemeStore((s) => s.mode) === "dark";
   return (
     <View
+      className={className}
       style={[
         {
           backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",

@@ -4,12 +4,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Text, Card, Input, Avatar, Button } from "../components";
 import { mockGirls } from "../data";
-import { useToastStore } from "../store";
+import { useToastStore, useThemeStore } from "../store";
 
 export default function BlockUserScreen() {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const showToast = useToastStore((s) => s.showToast);
+  const isDark = useThemeStore((s) => s.mode) === "dark";
   const [blockedUsers, setBlockedUsers] = useState<string[]>([]);
 
   const results = query
@@ -22,7 +23,7 @@ export default function BlockUserScreen() {
   }, [showToast]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: isDark ? "#000" : "#F5F5F5" }}>
       <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
           <TouchableOpacity onPress={() => router.back()}>

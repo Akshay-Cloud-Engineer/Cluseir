@@ -13,6 +13,7 @@ interface ButtonProps {
   onPress?: () => void;
   children: ReactNode;
   style?: ViewStyle;
+  className?: string;
   fullWidth?: boolean;
 }
 
@@ -24,6 +25,7 @@ export const Button = ({
   onPress,
   children,
   style,
+  className,
   fullWidth = false,
 }: ButtonProps) => {
   const isDark = useThemeStore((s) => s.mode) === "dark";
@@ -63,6 +65,7 @@ export const Button = ({
       onPress={onPress}
       disabled={disabled || loading}
       activeOpacity={0.7}
+      className={className}
       style={[
         sizeStyles[size],
         variantStyles[variant],
