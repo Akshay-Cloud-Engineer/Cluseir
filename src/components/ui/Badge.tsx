@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { View, ViewStyle } from "react-native";
 import { Text } from "./Text";
+import { useThemeStore } from "../../store";
 
 interface BadgeProps {
   children: ReactNode;
@@ -9,23 +10,31 @@ interface BadgeProps {
   style?: ViewStyle;
 }
 
-const bgColors = {
-  default: "#333",
-  primary: "#ec489920",
-  success: "#22c55e20",
-  warning: "#f59e0b20",
-  error: "#ef444420",
+const useBgColors = () => {
+  const isDark = useThemeStore((s) => s.mode) === "dark";
+  return {
+    default: isDark ? "#333" : "#E5E5E5",
+    primary: "#ec489920",
+    success: "#22c55e20",
+    warning: "#f59e0b20",
+    error: "#ef444420",
+  };
 };
 
-const textColors = {
-  default: "#A3A3A3",
-  primary: "#ec4899",
-  success: "#22c55e",
-  warning: "#f59e0b",
-  error: "#ef4444",
+const useTextColors = () => {
+  const isDark = useThemeStore((s) => s.mode) === "dark";
+  return {
+    default: isDark ? "#A3A3A3" : "#737373",
+    primary: "#ec4899",
+    success: "#22c55e",
+    warning: "#f59e0b",
+    error: "#ef4444",
+  };
 };
 
 export const Badge = ({ children, variant = "default", size = "sm", style }: BadgeProps) => {
+  const bgColors = useBgColors();
+  const textColors = useTextColors();
   return (
     <View
       style={[{

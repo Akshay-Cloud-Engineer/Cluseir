@@ -60,7 +60,7 @@ export default function CallHistoryScreen() {
                   </Badge>
                   {call.status === "completed" && (
                     <Text variant="small" color="#A3A3A3" style={{ marginTop: 4 }}>
-                      {Math.floor(call.duration)} min | ${call.cost.toFixed(2)}
+                      {Math.floor(call.duration / 60)} min | ${call.cost.toFixed(2)}
                     </Text>
                   )}
                 </View>

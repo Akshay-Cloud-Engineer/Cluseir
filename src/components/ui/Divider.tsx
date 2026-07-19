@@ -1,5 +1,6 @@
 import React from "react";
 import { View } from "react-native";
+import { useThemeStore } from "../../store";
 
 interface DividerProps {
   color?: string;
@@ -7,12 +8,13 @@ interface DividerProps {
   marginVertical?: number;
 }
 
-export const Divider = ({ color = "#333", thickness = 1, marginVertical = 16 }: DividerProps) => {
+export const Divider = ({ color, thickness = 1, marginVertical = 16 }: DividerProps) => {
+  const isDark = useThemeStore((s) => s.mode) === "dark";
   return (
     <View
       style={{
         height: thickness,
-        backgroundColor: color,
+        backgroundColor: color || (isDark ? "#333" : "#E5E5E5"),
         marginVertical,
       }}
     />
