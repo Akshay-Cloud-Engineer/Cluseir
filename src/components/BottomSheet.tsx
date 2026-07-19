@@ -1,5 +1,11 @@
-import React, { useEffect, useRef, ReactNode } from "react";
-import { View, Animated, Dimensions, TouchableWithoutFeedback } from "react-native";
+import React, { useEffect, ReactNode } from "react";
+import { View, Dimensions, TouchableWithoutFeedback } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSpring,
+} from "react-native-reanimated";
 import { Text } from "./ui/Text";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -19,46 +25,45 @@ export const BottomSheet = ({
   children,
   height = SCREEN_HEIGHT * 0.5,
 }: BottomSheetProps) => {
-  const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
-  const backdropOpacity = useRef(new Animated.Value(0)).current;
+  const translateY = useSharedValue(SCREEN_HEIGHT);
+  const backdropOpacity = useSharedValue(0);
 
   useEffect(() => {
     if (visible) {
-      Animated.spring(translateY, {
-        toValue: 0,
+      translateY.value = withSpring(0, {
         damping: 20,
         stiffness: 90,
-        useNativeDriver: true,
-      }).start();
-      Animated.timing(backdropOpacity, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
+      });
+      backdropOpacity.value = withTiming(1, { duration: 300 });
     } else {
-      Animated.timing(translateY, {
-        toValue: SCREEN_HEIGHT,
-        duration: 250,
-        useNativeDriver: true,
-      }).start();
-      Animated.timing(backdropOpacity, {
-        toValue: 0,
-        duration: 250,
-        useNativeDriver: true,
-      }).start();
+      translateY.value = withTiming(SCREEN_HEIGHT, { duration: 250 });
+      backdropOpacity.value = withTiming(0, { duration: 250 });
     }
   }, [visible, translateY, backdropOpacity]);
 
+  const animatedBackdropStyle = useAnimatedStyle(() => {
+    return {
+      opacity: backdropOpacity.value,
+    };
+  });
+
+  const animatedSheetStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    };
+  });
+
+  // Always render to allow exit animations, but pointer events handled by display: none on backdrop
   return (
     <View className="absolute top-0 left-0 right-0 bottom-0 z-[1000]" pointerEvents={visible ? "auto" : "none"}>
       <TouchableWithoutFeedback onPress={onClose}>
         <Animated.View
-          style={[{ opacity: backdropOpacity }]}
+          style={[animatedBackdropStyle]}
           className="flex-1 bg-black/50"
         />
       </TouchableWithoutFeedback>
       <Animated.View
-        style={[{ height }, { transform: [{ translateY }] }]}
+        style={[{ height }, animatedSheetStyle]}
         className="absolute bottom-0 left-0 right-0 bg-surface-light dark:bg-[#1E1E1E] rounded-t-3xl p-5"
       >
         <View className="w-10 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600 self-center mb-4" />
@@ -72,3 +77,4 @@ export const BottomSheet = ({
     </View>
   );
 };
+

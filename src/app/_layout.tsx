@@ -21,7 +21,22 @@ export default function RootLayout() {
 
   return (
     <AppProviders>
-      <Stack screenOptions={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="girl/[id]" options={{ animation: "slide_from_right" }} />
+        <Stack.Screen name="call/[id]" options={{ animation: "slide_from_bottom" }} />
+        <Stack.Screen name="call-history" options={{ animation: "slide_from_right" }} />
+        <Stack.Screen name="incoming-request" options={{ animation: "slide_from_bottom" }} />
+        <Stack.Screen name="outgoing-request" options={{ animation: "slide_from_right" }} />
+        <Stack.Screen name="filters" options={{ animation: "slide_from_bottom" }} />
+        <Stack.Screen name="edit-profile" options={{ animation: "slide_from_right" }} />
+        <Stack.Screen name="report-user" options={{ animation: "slide_from_right" }} />
+        <Stack.Screen name="block-user" options={{ animation: "slide_from_right" }} />
+        <Stack.Screen name="help" options={{ animation: "slide_from_right" }} />
+        <Stack.Screen name="about" options={{ animation: "slide_from_right" }} />
+      </Stack>
       <Toast />
     </AppProviders>
   );
