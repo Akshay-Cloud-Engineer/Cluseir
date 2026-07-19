@@ -1,0 +1,109 @@
+import { User, CallRecord, CallRequest } from "../../types";
+
+export const mockUser: User = {
+  id: "u1",
+  name: "Alex",
+  email: "alex@example.com",
+  phone: "+1 (555) 123-4567",
+  avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+  bio: "Love meeting new people and having meaningful conversations.",
+  location: "San Francisco, USA",
+  credits: 250,
+  preferences: {
+    minAge: 18,
+    maxAge: 35,
+    location: "Any",
+    language: "English",
+    sortBy: "rating",
+  },
+};
+
+export const mockCallHistory: CallRecord[] = [
+  {
+    id: "c1",
+    girlId: "1",
+    girlName: "Sophia",
+    girlAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400",
+    duration: 15,
+    cost: 37.5,
+    status: "completed",
+    timestamp: "Today, 2:30 PM",
+  },
+  {
+    id: "c2",
+    girlId: "2",
+    girlName: "Emma",
+    girlAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
+    duration: 8,
+    cost: 24.0,
+    status: "completed",
+    timestamp: "Today, 11:00 AM",
+  },
+  {
+    id: "c3",
+    girlId: "3",
+    girlName: "Olivia",
+    girlAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400",
+    duration: 0,
+    cost: 0,
+    status: "missed",
+    timestamp: "Yesterday, 8:15 PM",
+  },
+  {
+    id: "c4",
+    girlId: "6",
+    girlName: "Charlotte",
+    girlAvatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400",
+    duration: 25,
+    cost: 70.0,
+    status: "completed",
+    timestamp: "Yesterday, 3:00 PM",
+  },
+  {
+    id: "c5",
+    girlId: "8",
+    girlName: "Evelyn",
+    girlAvatar: "https://images.unsplash.com/photo-1524255684952-d718ce6b8fd2?w=400",
+    duration: 0,
+    cost: 0,
+    status: "cancelled",
+    timestamp: "2 days ago",
+  },
+];
+
+export const mockCallRequests: CallRequest[] = [
+  {
+    id: "r1",
+    girlId: "1",
+    girlName: "Sophia",
+    girlAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400",
+    girlRating: 4.8,
+    status: "pending",
+    timestamp: "2 min ago",
+    type: "incoming",
+  },
+  {
+    id: "r2",
+    girlId: "4",
+    girlName: "Isabella",
+    girlAvatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400",
+    girlRating: 4.7,
+    status: "accepted",
+    timestamp: "1 hour ago",
+    type: "outgoing",
+  },
+  {
+    id: "r3",
+    girlId: "5",
+    girlName: "Mia",
+    girlAvatar: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400",
+    girlRating: 4.5,
+    status: "pending",
+    timestamp: "30 min ago",
+    type: "outgoing",
+  },
+];
+
+export const updateUserCredits = (amount: number): void => {
+  mockUser.credits += amount;
+};

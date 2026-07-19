@@ -1,0 +1,65 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{ts,tsx}"],
+  presets: [require("nativewind/preset")],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: "#fdf2f8",
+          100: "#fce7f3",
+          200: "#fbcfe8",
+          300: "#f9a8d4",
+          400: "#f472b6",
+          500: "#ec4899",
+          600: "#db2777",
+          700: "#be185d",
+          800: "#9d174d",
+          900: "#831843",
+          950: "#500724",
+        },
+        secondary: {
+          50: "#f5f3ff",
+          100: "#ede9fe",
+          200: "#ddd6fe",
+          300: "#c4b5fd",
+          400: "#a78bfa",
+          500: "#8b5cf6",
+          600: "#7c3aed",
+          700: "#6d28d9",
+          800: "#5b21b6",
+          900: "#4c1d95",
+          950: "#2e1065",
+        },
+        surface: {
+          light: "#FFFFFF",
+          dark: "#121212",
+        },
+        background: {
+          light: "#F5F5F5",
+          dark: "#000000",
+        },
+        card: {
+          light: "#FFFFFF",
+          dark: "#1E1E1E",
+        },
+        text: {
+          light: "#000000",
+          dark: "#FFFFFF",
+        },
+        muted: {
+          light: "#737373",
+          dark: "#A3A3A3",
+        },
+        border: {
+          light: "#E5E5E5",
+          dark: "#333333",
+        },
+      },
+      fontFamily: {
+        sans: ["System"],
+      },
+    },
+  },
+  plugins: [],
+};
