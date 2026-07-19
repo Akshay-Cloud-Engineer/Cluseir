@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlashList } from "@shopify/flash-list";
-import { Text, Card, Avatar, Badge, EmptyState } from "../../components";
+import { Text, Card, Avatar, Badge } from "../../components";
 import { Notification } from "../../types";
 
 const initialNotifications: Notification[] = [
@@ -32,60 +31,69 @@ export default function NotificationsScreen() {
     }
   };
 
-  const renderItem = ({ item: notification }: { item: Notification }) => (
-    <TouchableOpacity activeOpacity={0.7} onPress={() => markAsRead(notification.id)} className="px-5 mb-2">
-      <Card
-        className={`${notification.read ? "opacity-60" : "border-l-4 border-l-primary-500"}`}
-      >
-        <View className="flex-row items-center">
-          {notification.avatar ? (
-            <Avatar uri={notification.avatar} size={48} />
-          ) : (
-            <View className="w-12 h-12 rounded-full bg-surface-light dark:bg-surface-dark items-center justify-center">
-              <Text className="text-[22px]">{getIcon(notification.type)}</Text>
-            </View>
-          )}
-          <View className="flex-1 ml-3">
-            <Text variant="captionBold">{notification.title}</Text>
-            <Text variant="small" className="mt-0.5 text-muted-light dark:text-muted-dark">
-              {notification.message}
-            </Text>
-            <Text variant="tiny" className="mt-1 text-neutral-500">
-              {notification.createdAt}
-            </Text>
-          </View>
-        </View>
-      </Card>
-    </TouchableOpacity>
-  );
-
   return (
-    <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
-      <View className="px-5 pt-4 pb-2">
-        <View className="flex-row items-center gap-2">
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
           <Text variant="h2">Notifications</Text>
           {unread > 0 && (
             <Badge variant="error" size="md">{unread} new</Badge>
           )}
         </View>
       </View>
-      <View className="flex-1">
+      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, paddingHorizontal: 20 }}>
         {notifications.length === 0 ? (
-          <EmptyState
-            icon="🔔"
-            title="No notifications"
-            message="You're all caught up!"
-          />
+          <View style={{ flex: 1, alignItems: "center", paddingTop: 60 }}>
+            <Text style={{ fontSize: 60, marginBottom: 16 }}>🔔</Text>
+            <Text variant="h4" style={{ textAlign: "center" }}>No notifications</Text>
+            <Text variant="body" color="#A3A3A3" style={{ textAlign: "center", marginTop: 8 }}>
+              You&apos;re all caught up!
+            </Text>
+          </View>
         ) : (
-          <FlashList
-            data={notifications}
-            renderItem={renderItem}
-            estimatedItemSize={80}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 20 }}
-          />
+          notifications.map((notification) => (
+            <TouchableOpacity key={notification.id} activeOpacity={0.7} onPress={() => markAsRead(notification.id)}>
+              <Card
+                style={{
+                  marginBottom: 8,
+                  opacity: notification.read ? 0.6 : 1,
+                  borderLeftWidth: notification.read ? 0 : 3,
+                  borderLeftColor: "#ec4899",
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  {notification.avatar ? (
+                    <Avatar uri={notification.avatar} size={48} />
+                  ) : (
+                    <View
+                      style={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: 24,
+                        backgroundColor: "#333",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text style={{ fontSize: 22 }}>{getIcon(notification.type)}</Text>
+                    </View>
+                  )}
+                  <View style={{ flex: 1, marginLeft: 12 }}>
+                    <Text variant="captionBold">{notification.title}</Text>
+                    <Text variant="small" color="#A3A3A3" style={{ marginTop: 2 }}>
+                      {notification.message}
+                    </Text>
+                    <Text variant="tiny" color="#555" style={{ marginTop: 4 }}>
+                      {notification.createdAt}
+                    </Text>
+                  </View>
+                </View>
+              </Card>
+            </TouchableOpacity>
+          ))
         )}
-      </View>
+        <View style={{ height: 20 }} />
+      </ScrollView>
     </SafeAreaView>
   );
 }

@@ -45,40 +45,42 @@ export default function OnboardingScreen() {
   const slide = slides[currentSlide];
 
   return (
-    <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
-      <View className="flex-1 px-6">
-        <View className="items-end pt-2">
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <View style={{ flex: 1, paddingHorizontal: 24 }}>
+        <View style={{ alignItems: "flex-end", paddingTop: 8 }}>
           <Button variant="ghost" onPress={handleSkip}>
             Skip
           </Button>
         </View>
 
-        <View className="flex-1 items-center justify-center">
-          <Text className="text-[100px] mb-8">{slide.emoji}</Text>
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+          <Text style={{ fontSize: 100, marginBottom: 32 }}>{slide.emoji}</Text>
           <Text
             variant="h1"
-            className="text-center mb-4"
+            style={{ textAlign: "center", marginBottom: 16 }}
           >
             {slide.title}
           </Text>
           <Text
             variant="body"
-            className="text-center text-muted-light dark:text-muted-dark leading-6"
+            color="#A3A3A3"
+            style={{ textAlign: "center", lineHeight: 24 }}
           >
             {slide.description}
           </Text>
         </View>
 
-        <View className="items-center mb-8">
-          <View className="flex-row gap-2 mb-8">
+        <View style={{ alignItems: "center", marginBottom: 32 }}>
+          <View style={{ flexDirection: "row", gap: 8, marginBottom: 32 }}>
             {slides.map((_, i) => (
               <View
                 key={i}
-                className={`h-2 rounded-full ${
-                  currentSlide === i
-                    ? "w-6 bg-primary-500"
-                    : "w-2 bg-neutral-800"
-                }`}
+                style={{
+                  width: currentSlide === i ? 24 : 8,
+                  height: 8,
+                  borderRadius: 4,
+                  backgroundColor: currentSlide === i ? "#ec4899" : "#333",
+                }}
               />
             ))}
           </View>

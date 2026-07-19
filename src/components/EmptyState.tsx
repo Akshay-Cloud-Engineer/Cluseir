@@ -8,7 +8,6 @@ interface EmptyStateProps {
   message?: string;
   actionLabel?: string;
   onAction?: () => void;
-  icon?: string;
 }
 
 export const EmptyState = ({
@@ -16,18 +15,24 @@ export const EmptyState = ({
   message,
   actionLabel,
   onAction,
-  icon,
 }: EmptyStateProps) => {
   return (
-    <View className="flex-1 items-center justify-center p-8 pt-20">
-      {icon && <Text className="text-[60px] mb-4">{icon}</Text>}
-      <Text variant="h4" className="text-center mb-2">
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 32,
+      }}
+    >
+      <Text variant="h4" style={{ textAlign: "center", marginBottom: 8 }}>
         {title}
       </Text>
       {message && (
         <Text
           variant="body"
-          className="text-center mb-6 text-muted-light dark:text-muted-dark"
+          color="#A3A3A3"
+          style={{ textAlign: "center", marginBottom: 24 }}
         >
           {message}
         </Text>

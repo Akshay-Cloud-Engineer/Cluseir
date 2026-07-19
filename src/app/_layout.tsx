@@ -3,7 +3,6 @@ import { Stack } from "expo-router";
 import { AppProviders } from "../providers/AppProviders";
 import { Toast } from "../components/Toast";
 import * as SplashScreen from "expo-splash-screen";
-import "../theme/global.css";
 
 SplashScreen.preventAutoHideAsync();
 

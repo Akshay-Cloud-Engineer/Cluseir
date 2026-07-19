@@ -22,7 +22,7 @@ export default function Index() {
   }, [isAuthenticated, isOnboarded, router]);
 
   return (
-    <View className="flex-1 items-center justify-center bg-background-light dark:bg-background-dark">
+    <View style={{ flex: 1, backgroundColor: "#000", alignItems: "center", justifyContent: "center" }}>
       <ActivityIndicator size="large" color="#ec4899" />
     </View>
   );

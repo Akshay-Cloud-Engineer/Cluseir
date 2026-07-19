@@ -34,9 +34,9 @@ export default function ActiveCallScreen() {
 
   if (!girl) {
     return (
-      <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark items-center justify-center">
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#000", alignItems: "center", justifyContent: "center" }}>
         <Text variant="h4">Call not found</Text>
-        <Button variant="primary" className="mt-4" onPress={() => router.replace("/(tabs)")}>
+        <Button variant="primary" style={{ marginTop: 16 }} onPress={() => router.replace("/(tabs)")}>
           Go Back
         </Button>
       </SafeAreaView>
@@ -46,30 +46,30 @@ export default function ActiveCallScreen() {
   const cost = duration * CALL_RATES.perMinute / 60;
 
   return (
-    <SafeAreaView className="flex-1 bg-background-light dark:bg-background-dark">
-      <View className="flex-1 items-center justify-center px-6">
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 24 }}>
         <Avatar uri={girl.avatar} size={160} />
-        <Text variant="h2" className="mt-5">{girl.name}</Text>
-        <View className="flex-row items-center gap-2 mt-2">
-          <View className="w-2 h-2 rounded-full bg-success" />
-          <Text variant="caption" className="text-success">Connected</Text>
+        <Text variant="h2" style={{ marginTop: 20 }}>{girl.name}</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 8 }}>
+          <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: "#22c55e" }} />
+          <Text variant="caption" color="#22c55e">Connected</Text>
         </View>
 
-        <View className="mt-10 items-center">
-          <Text variant="h1" className="tracking-widest">
+        <View style={{ marginTop: 40, alignItems: "center" }}>
+          <Text variant="h1" style={{ letterSpacing: 4 }}>
             {formatDuration(duration)}
           </Text>
-          <Text variant="caption" className="mt-2 text-muted-light dark:text-muted-dark">
+          <Text variant="caption" color="#A3A3A3" style={{ marginTop: 8 }}>
             ${cost.toFixed(2)} charged so far
           </Text>
         </View>
 
-        <View className="flex-row gap-8 mt-12">
+        <View style={{ flexDirection: "row", gap: 32, marginTop: 48 }}>
           <Button variant="ghost" size="lg" onPress={() => {}}>
-            <Text className="text-[28px]">🔇</Text>
+            <Text style={{ fontSize: 28 }}>🔇</Text>
           </Button>
           <Button variant="ghost" size="lg" onPress={() => {}}>
-            <Text className="text-[28px]">📹</Text>
+            <Text style={{ fontSize: 28 }}>📹</Text>
           </Button>
         </View>
 
@@ -78,7 +78,10 @@ export default function ActiveCallScreen() {
           size="lg"
           fullWidth
           onPress={handleEndCall}
-          className="mt-12 bg-error"
+          style={{
+            marginTop: 48,
+            backgroundColor: "#ef4444",
+          }}
         >
           End Call
         </Button>
@@ -86,4 +89,3 @@ export default function ActiveCallScreen() {
     </SafeAreaView>
   );
 }
-

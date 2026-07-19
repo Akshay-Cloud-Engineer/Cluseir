@@ -20,19 +20,35 @@ export const Modal = ({ visible, onClose, title, children, actions }: ModalProps
       onRequestClose={onClose}
     >
       <TouchableWithoutFeedback onPress={onClose}>
-        <View className="flex-1 bg-black/60 justify-center items-center p-6">
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.6)",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 24,
+          }}
+        >
           <TouchableWithoutFeedback onPress={() => {}}>
-            <View className="bg-surface-light dark:bg-surface-dark rounded-3xl p-6 w-full max-w-sm">
+            <View
+              style={{
+                backgroundColor: "#1E1E1E",
+                borderRadius: 20,
+                padding: 24,
+                width: "100%",
+                maxWidth: 400,
+              }}
+            >
               {title && (
-                <Text variant="h4" className="mb-3">
+                <Text variant="h4" style={{ marginBottom: 12 }}>
                   {title}
                 </Text>
               )}
               {children}
               {actions && (
-                <View className="flex-row gap-3 mt-5">
+                <View style={{ flexDirection: "row", gap: 12, marginTop: 20 }}>
                   {actions.map((action, index) => (
-                    <View key={index} className="flex-1">
+                    <View key={index} style={{ flex: 1 }}>
                       <Button
                         variant={action.variant || "primary"}
                         onPress={action.onPress}
@@ -51,4 +67,3 @@ export const Modal = ({ visible, onClose, title, children, actions }: ModalProps
     </RNModal>
   );
 };
-
