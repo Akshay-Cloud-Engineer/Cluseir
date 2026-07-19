@@ -1,32 +1,30 @@
-import { MMKV } from "react-native-mmkv";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StateStorage } from "zustand/middleware";
 
-const mmkv = new MMKV({ id: "cluseir-storage" });
-
 export const zustandStorage: StateStorage = {
-  getItem: (name: string): string | null => {
-    const value = mmkv.getString(name);
+  getItem: async (name: string): Promise<string | null> => {
+    const value = await AsyncStorage.getItem(name);
     return value ?? null;
   },
-  setItem: (name: string, value: string): void => {
-    mmkv.set(name, value);
+  setItem: async (name: string, value: string): Promise<void> => {
+    await AsyncStorage.setItem(name, value);
   },
-  removeItem: (name: string): void => {
-    mmkv.delete(name);
+  removeItem: async (name: string): Promise<void> => {
+    await AsyncStorage.removeItem(name);
   },
 };
 
 export const storageService = {
   get: async (key: string): Promise<string | null> => {
-    return mmkv.getString(key) ?? null;
+    return AsyncStorage.getItem(key);
   },
   set: async (key: string, value: string): Promise<void> => {
-    mmkv.set(key, value);
+    await AsyncStorage.setItem(key, value);
   },
   delete: async (key: string): Promise<void> => {
-    mmkv.delete(key);
+    await AsyncStorage.removeItem(key);
   },
   clearAll: async (): Promise<void> => {
-    mmkv.clearAll();
+    await AsyncStorage.clear();
   },
 };
